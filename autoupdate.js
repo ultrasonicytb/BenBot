@@ -1,4 +1,4 @@
-const { sshGit,infoChannel,branch } = require('./config.json');
+const { httpGit,infoChannel,branch } = require('./config.json');
 const { exec } = require('child_process');
 const simpleGit = require('simple-git');
 
@@ -10,7 +10,7 @@ module.exports = {
         const git = new simpleGit()
         setInterval(async () => {
             await git.fetch()
-            const status = await git.status(sshGit, branch, { "-uno": null })
+            const status = await git.status(httpGit, branch, { "-uno": null })
             if (status.behind > 0){
                 client.logger.info(`Update found on branch ${branch}`)
                 await client.channels.cache.get(infoChannel).send("Une mise à jour est disponible, je vais la télécharger")
