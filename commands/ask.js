@@ -32,7 +32,7 @@ module.exports = {
             // Reply with the attachment
             const str = `**${interaction.member.nickname}** asked lord Ben :\n"${question}" : `
             await interaction.deferReply()
-            await interaction.reply({ content : str, files: [attachment] })
+            await interaction.editReply({ content : str, files: [attachment] })
         }
     }
 }
