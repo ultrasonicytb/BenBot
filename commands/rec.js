@@ -19,13 +19,16 @@ module.exports = {
             }
             const channel = interaction.member.voice.channel;
             const connection = voiceLib.join(channel, { selfDeaf: false });
-            const decodedStream = voiceLib.listen(connection, interaction.member.id);
+            const stream = voiceLib.listen(connection, interaction.member.id, true);
+            const player = voiceLib.playStream(connection, stream);
+
 
 
             // Create a listener to wait for the user to leave the channel
             const listener = (oldState, newState) => {
                 if (channel.members.size == 1) {
                     // Users left the channel
+                    player.stop();
                     voiceLib.leave(connection);
                     interaction.client.removeListener('voiceStateUpdate', listener);
                 }
