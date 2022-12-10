@@ -6,6 +6,7 @@ const { combine, timestamp, label, printf } = format;
 const { token, infoChannel } = require('./config.json');
 const { reloadCommands, addJSONCommand } = require('./deploy-commands');
 const { autoupdate } = require('./autoupdate');
+const { activityLoop } = require('./lib/activityLoop');
 
 const version = fs.readFileSync(path.join(__dirname, 'version'), "utf-8")
 
@@ -31,12 +32,13 @@ const logger = createLogger({
 
 const client = new Client({
 	intents: [
-		GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildPresences, GatewayIntentBits.GuildMembers
+		GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildPresences, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates
 	]
 });
 
 client.once('ready', async () => {
-	client.user.setPresence({ activities: [{ name: 'Yes...' }], status: 'idle' });
+	client.user.setPresence({ status: 'idle' });
+	activityLoop(client);
 	// await autoupdate(client)
 	await reloadCommands(client.logger)
 	client.logger.info("Bot Started");
