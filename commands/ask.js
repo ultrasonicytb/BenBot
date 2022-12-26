@@ -30,7 +30,8 @@ module.exports = {
             // Create an attachment from the buffer
             const attachment = new AttachmentBuilder(buffer, { name: imagesFiles[random] });
             // Reply with the attachment
-            const str = `**${interaction.member.nickname}** asked lord Ben :\n"${question}" : `
+            memberName = interaction.member.nickname || interaction.user.username; 
+            const str = `**${memberName}** asked lord Ben :\n"${question}" : `
             await interaction.deferReply()
             await interaction.editReply({ content : str, files: [attachment] })
         }
